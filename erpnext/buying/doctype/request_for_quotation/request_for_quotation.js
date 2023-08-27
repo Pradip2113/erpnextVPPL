@@ -2,6 +2,19 @@
 // License: GNU General Public License v3. See license.txt
 
 
+
+frappe.ui.form.on('Request for Quotation', {
+	
+	onload: function(frm) {
+		frm.call({
+				method:'set_status_of_material_request',//function name defined in python
+				doc: frm.doc, //current document
+			});
+
+	}
+});
+
+
 {% include 'erpnext/public/js/controllers/buying.js' %};
 
 cur_frm.add_fetch('contact', 'email_id', 'email_id')

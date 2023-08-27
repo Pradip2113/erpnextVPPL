@@ -73,10 +73,13 @@ class PurchaseReceipt(BuyingController):
 	def get_qty(self):
 		# cfactor=0
 		for u in self.get('items'):
+			# u.qty=self.actual_weight
+			# u.amount=u.rate*u.qty
 			if u.uom=="KG":
 				u.qty=self.actual_weight
 			if u.uom=="TON":
-				u.qty=self.actual_weight*0.001
+				u.qty=self.actual_weight
+
 
 			#     batch=frappe.db.get_list("Item")
 			#     for b in batch:

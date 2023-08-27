@@ -1281,11 +1281,10 @@ class AccountsController(TransactionBase):
 				continue
 
 			already_billed = self.get_billed_amount_for_item(item, item_ref_dn, based_on)
-
 			total_billed_amt = flt(
 				flt(already_billed) + flt(item.get(based_on)), self.precision(based_on, item)
 			)
-
+			frappe.msgprint(str(total_billed_amt))
 			allowance, item_allowance, global_qty_allowance, global_amount_allowance = get_allowance_for(
 				item.item_code, item_allowance, global_qty_allowance, global_amount_allowance, "amount"
 			)
@@ -1299,9 +1298,10 @@ class AccountsController(TransactionBase):
 
 			overbill_amt = total_billed_amt - max_allowed_amt
 			total_overbilled_amt += overbill_amt
-
+			frappe.msgprint(str(overbill_amt))
 			if overbill_amt > 0.01 and role_allowed_to_over_bill not in user_roles:
 				if self.doctype != "Purchase Invoice":
+					frappe.throw("total_overbilled_amt"+total_overbilled_amt+"overbill_amt"+str(overbill_amt))
 					self.throw_overbill_exception(item, max_allowed_amt)
 				elif not cint(
 					frappe.db.get_single_value(

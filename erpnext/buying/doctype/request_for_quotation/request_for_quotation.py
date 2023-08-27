@@ -72,16 +72,71 @@ class RequestforQuotation(BuyingController):
 					args.idx, frappe.bold(args.supplier)
 				)
 			)
-
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# code for rfq status code edited in standard code so do not delete any line
 	def on_submit(self):
 		self.db_set("status", "Submitted")
 		for supplier in self.suppliers:
 			supplier.email_sent = 0
 			supplier.quote_status = "Pending"
 		self.send_to_supplier()
+		self.change_status_from_material_request()
+		self.set_status_of_material_request_doctype()
+
+ 
+	@frappe.whitelist()
+	def change_status_from_material_request(self):
+		if self.items:
+			for s in self.get("items"):
+				MRI = frappe.get_all('Material Request Item', filters={'Parent': s.material_request ,'item_code':s.item_code}, fields={"name","item_code","rfq_status" })
+				for m in MRI:
+					frappe.db.set_value("Material Request Item",m.name,"rfq_status",1)
 
 	def on_cancel(self):
 		self.db_set("status", "Cancelled")
+		self.change_status_from_material_request_on_cancel()
+		self.set_status_of_material_request_doctype()
+  
+	@frappe.whitelist()
+	def change_status_from_material_request_on_cancel(self):
+		if self.items:
+			for s in self.get("items"): 
+				MRI = frappe.get_all('Material Request Item', filters={'Parent': s.material_request ,'item_code':s.item_code}, fields={"name","item_code","rfq_status" })
+				for m in MRI:
+					imp = frappe.get_all('Request for Quotation Item', filters={'material_request': s.material_request ,'item_code':s.item_code, "docstatus" : 1}, fields={"name","item_code",})
+					if len(imp) == 0:
+						frappe.db.set_value("Material Request Item",m.name,"rfq_status",0)
+     
+     
+	@frappe.whitelist()
+	def set_status_of_material_request(self):
+		if self.items:
+			for s in self.get("items"):
+				MRI = frappe.get_all('Material Request Item', filters={'Parent': s.material_request ,'item_code':s.item_code}, fields={"name","item_code","rfq_status" })
+				for m in MRI:
+					frappe.db.set_value("Request for Quotation Item",s.name,"rfq_status",m.rfq_status)
+
+
+	@frappe.whitelist()
+	def set_status_of_material_request_doctype(self):
+		if self.items:
+			rfq_statuses = []
+			for s in self.get("items"):
+				MRI = frappe.get_all('Material Request Item', filters={'Parent': s.material_request}, fields={"name","item_code","rfq_status" })
+				for m in MRI:
+					rfq_statuses.append(m.rfq_status)
+				break
+
+			if all(status == 0 for status in rfq_statuses):
+				frappe.db.set_value("Material Request",s.material_request,"rfq_status","RFQ Pending")
+				
+			elif all(status == 1 for status in rfq_statuses):
+				frappe.db.set_value("Material Request",s.material_request,"rfq_status","RFQ Done")
+			else:
+				frappe.db.set_value("Material Request",s.material_request,"rfq_status","RFQ Partially ")
+
+
+# ----------------------------------------------------------------------------------------------------------------------
 
 	@frappe.whitelist()
 	def get_supplier_email_preview(self, supplier):
@@ -203,7 +258,12 @@ class RequestforQuotation(BuyingController):
 
 		subject = self.subject or _("Request for Quotation")
 		template = "templates/emails/request_for_quotation.html"
-		sender = frappe.session.user not in STANDARD_USERS and frappe.session.user or None
+		doc = frappe.get_all('Email Account', filters={'email_id': str(frappe.session.user)}, fields={"name","login_id"})
+		alter_email = ((doc[0].login_id))
+		if alter_email:
+			sender = alter_email
+		else:
+			sender =  frappe.session.user not in STANDARD_USERS and frappe.session.user or None
 		message = frappe.get_template(template).render(args)
 
 		if preview:

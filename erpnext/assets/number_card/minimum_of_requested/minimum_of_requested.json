@@ -1,0 +1,22 @@
+{
+ "creation": "2023-08-23 14:50:45.206933",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "filters_json": "{}",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 0,
+ "is_standard": 1,
+ "label": "Minimum of Requested",
+ "modified": "2023-08-23 14:50:45.319525",
+ "modified_by": "chavan.vpplho@gmail.com",
+ "module": "Assets",
+ "name": "Minimum of Requested",
+ "owner": "chavan.vpplho@gmail.com",
+ "report_field": "requested",
+ "report_function": "Minimum",
+ "report_name": "Items To Be Requested",
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Report"
+}

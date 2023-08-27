@@ -162,8 +162,7 @@
    "label": "Supplier Group",
    "oldfieldname": "supplier_type",
    "oldfieldtype": "Link",
-   "options": "Supplier Group",
-   "reqd": 1
+   "options": "Supplier Group"
   },
   {
    "default": "Company",
@@ -457,7 +456,7 @@
    "link_fieldname": "party"
   }
  ],
- "modified": "2023-05-08 16:36:24.762221",
+ "modified": "2023-05-16 16:02:34.772880",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Supplier",
@@ -520,7 +519,6 @@
  "quick_entry": 1,
  "search_fields": "supplier_name, supplier_group",
  "show_name_in_global_search": 1,
- "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "ASC",
  "states": [],

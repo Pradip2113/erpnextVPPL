@@ -33,6 +33,32 @@ form_grid_templates = {"items": "templates/form_grid/item_grid.html"}
 
 
 class PurchaseOrder(BuyingController):
+
+	@frappe.whitelist()
+	def get_tandc(self):
+		for i in self.get("select_terms"):
+			if self.terms=='None':
+				self.terms=i.description
+			else:
+				self.terms=str(self.terms)+i.description
+
+
+	def before_save(self):
+		
+
+		for i in self.get('items'):
+			temp=str(i.item_tax_template)
+			s = [int(s) for s in str.split(temp) if s.isdigit()]
+			temp2=0.0
+			totalamt=0.0
+			for j in s:
+				temp2=float(j)
+		
+			totalamt=i.amount+((i.amount*temp2)/100)
+			i.total_amount=totalamt
+		# self.end_date=datetime.date.today()
+		# self.end_time=datetime.datetime.now().time()
+
 	def __init__(self, *args, **kwargs):
 		super(PurchaseOrder, self).__init__(*args, **kwargs)
 		self.status_updater = [

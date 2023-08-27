@@ -343,6 +343,7 @@
    "options": "fa fa-bullhorn"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "shipping_address_name",
    "fieldtype": "Link",
    "label": "Shipping Address",
@@ -350,6 +351,7 @@
    "print_hide": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "shipping_address",
    "fieldtype": "Small Text",
    "label": "Shipping Address",
@@ -1403,7 +1405,7 @@
  "idx": 146,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-05-15 12:38:03.351882",
+ "modified": "2023-07-10 17:55:43.683630",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Delivery Note",

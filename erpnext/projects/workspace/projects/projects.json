@@ -191,8 +191,8 @@
    "type": "Link"
   }
  ],
- "modified": "2023-05-11 10:17:13.150279",
- "modified_by": "pradip.jadhav@erpdata.in",
+ "modified": "2023-06-01 16:10:49.895308",
+ "modified_by": "Administrator",
  "module": "Projects",
  "name": "Projects",
  "number_cards": [],
@@ -202,7 +202,7 @@
  "quick_lists": [],
  "restrict_to_domain": "",
  "roles": [],
- "sequence_id": 25.0,
+ "sequence_id": 27.0,
  "shortcuts": [
   {
    "color": "Blue",

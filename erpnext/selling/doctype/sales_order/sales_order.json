@@ -16,6 +16,7 @@
   "customer",
   "customer_name",
   "tax_id",
+  "sale_type",
   "order_type",
   "column_break_7",
   "transaction_date",
@@ -27,12 +28,12 @@
   "skip_delivery_note",
   "amended_from",
   "accounting_dimensions_section",
-  "cost_center",
   "dimension_col_break",
   "project",
   "column_break_77",
   "source",
   "campaign",
+  "cost_center",
   "custom_dimensions_section",
   "currency_and_price_list",
   "currency",
@@ -239,14 +240,14 @@
    "default": "Sales",
    "fieldname": "order_type",
    "fieldtype": "Select",
+   "hidden": 1,
    "hide_days": 1,
    "hide_seconds": 1,
    "label": "Order Type",
    "oldfieldname": "order_type",
    "oldfieldtype": "Select",
    "options": "\nSales\nMaintenance\nShopping Cart",
-   "print_hide": 1,
-   "reqd": 1
+   "print_hide": 1
   },
   {
    "fieldname": "column_break1",
@@ -709,7 +710,7 @@
    "fieldtype": "Section Break",
    "hide_days": 1,
    "hide_seconds": 1,
-   "label": "Taxes",
+   "label": "Taxes   ",
    "oldfieldtype": "Section Break",
    "options": "fa fa-money"
   },
@@ -1637,13 +1638,19 @@
    "fieldname": "named_place",
    "fieldtype": "Data",
    "label": "Named Place"
+  },
+  {
+   "fieldname": "sale_type",
+   "fieldtype": "Link",
+   "label": "Sale Type",
+   "options": "Sale Type"
   }
  ],
  "icon": "fa fa-file-text",
  "idx": 105,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-12-12 18:34:00.681780",
+ "modified": "2023-06-12 17:01:11.375182",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Sales Order",
@@ -1710,6 +1717,20 @@
    "permlevel": 1,
    "read": 1,
    "role": "Sales Manager",
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],

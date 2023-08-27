@@ -124,6 +124,7 @@
    "width": "150px"
   },
   {
+   "fetch_from": "item_code.item_name",
    "fieldname": "item_name",
    "fieldtype": "Data",
    "in_global_search": 1,
@@ -854,7 +855,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-04-06 09:28:29.182053",
+ "modified": "2023-07-07 15:08:16.067985",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Delivery Note Item",

@@ -1,5 +1,42 @@
 // Copyright (c) 2018, Frappe Technologies Pvt. Ltd. and contributors
 // For license information, please see license.txt
+frappe.ui.form.on('Blanket Order', {
+	quota:function(frm) {
+		// your code here
+		frm.call({
+			method:'opcost',
+			doc: frm.doc,
+		});
+	}
+})
+frappe.ui.form.on('Blanket Order Item', {
+	unit_of_measure_:function(frm) {
+		// your code here
+		frm.call({
+			method:'uomfact',
+			doc: frm.doc,
+		});
+	}
+})
+frappe.ui.form.on('Blanket Order Item', {
+	qty:function(frm) {
+		// your code here
+		frm.call({
+			method:'uomfact',
+			doc: frm.doc,
+		});
+	}
+})
+
+frappe.ui.form.on('Blanket Order Item', {
+	item_code: function(frm) {
+		frm.call({
+				method:'uomfetch',
+				doc: frm.doc, 
+			});
+
+	}
+});
 
 frappe.ui.form.on('Blanket Order', {
 	onload: function(frm) {
@@ -18,6 +55,7 @@ frappe.ui.form.on('Blanket Order', {
 	},
 
 	refresh: function(frm) {
+		debugger
 		erpnext.hide_company();
 		if (frm.doc.customer && frm.doc.docstatus === 1 && frm.doc.to_date > frappe.datetime.get_today()) {
 			frm.add_custom_button(__("Sales Order"), function() {

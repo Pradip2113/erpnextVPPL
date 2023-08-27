@@ -2,8 +2,22 @@
 // For license information, please see license.txt
 {% include "erpnext/public/js/controllers/accounts.js" %}
 frappe.provide("erpnext.accounts.dimensions");
-
 cur_frm.cscript.tax_table = "Advance Taxes and Charges";
+
+
+
+
+frappe.ui.form.on('Payment Entry', {
+	onload: function(frm) {
+		frm.call({
+			method: 'amtinwords',//function name defined in python
+			doc: frm.doc, //current document
+		});
+
+	}
+});
+
+
 
 frappe.ui.form.on('Payment Entry', {
 	onload: function(frm) {

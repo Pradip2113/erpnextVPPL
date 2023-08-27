@@ -10,8 +10,8 @@
  "document_type": "Setup",
  "engine": "InnoDB",
  "field_order": [
-  "basic_info",
   "naming_series",
+  "basic_info",
   "salutation",
   "customer_name",
   "customer_type",
@@ -178,7 +178,6 @@
    "oldfieldname": "customer_group",
    "oldfieldtype": "Link",
    "options": "Customer Group",
-   "reqd": 1,
    "search_index": 1
   },
   {
@@ -568,7 +567,7 @@
    "link_fieldname": "party"
   }
  ],
- "modified": "2023-05-10 20:00:17.864020",
+ "modified": "2023-07-08 17:13:06.166278",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Customer",

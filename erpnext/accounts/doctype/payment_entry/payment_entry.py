@@ -4,7 +4,7 @@
 
 import json
 from functools import reduce
-
+from num2words import num2words
 import frappe
 from frappe import ValidationError, _, qb, scrub, throw
 from frappe.utils import cint, comma_or, flt, getdate, nowdate
@@ -37,10 +37,19 @@ class InvalidPaymentEntry(ValidationError):
 
 
 class PaymentEntry(AccountsController):
+    
+
 	def __init__(self, *args, **kwargs):
 		super(PaymentEntry, self).__init__(*args, **kwargs)
 		if not self.is_new():
 			self.setup_party_account_field()
+   
+   
+   
+	@frappe.whitelist()
+	def amtinwords(self):
+		if self.total_allocated_amount:
+			self.in_words = num2words(self.total_allocated_amount)
 
 	def setup_party_account_field(self):
 		self.party_account_field = None

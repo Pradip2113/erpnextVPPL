@@ -20,7 +20,7 @@ form_grid_templates = {"items": "templates/form_grid/item_grid.html"}
 
 class DeliveryNote(SellingController):
 
-		#-----------------------------------------------------------------------------------------------------------------
+	#-----------------------------------------------------------------------------------------------------------------
 	@frappe.whitelist()
 	def get_bridge_info(self):
 		self.user_name=frappe.db.get_value("User", frappe.session.user, "full_name")
@@ -73,7 +73,8 @@ class DeliveryNote(SellingController):
 			if u.uom=="KG":
 				u.qty=self.actual_weight
 			if u.uom=="TON":
-				u.qty=self.actual_weight*0.001
+				u.qty=self.actual_weight
+				u.amount=u.qty * u.rate
 
 			#     batch=frappe.db.get_list("Item")
 			#     for b in batch:
@@ -144,6 +145,7 @@ class DeliveryNote(SellingController):
 	#           i.qty=self.actual_weight
 
 	#-----------------------------------------------------------------------------------------------------------------
+	
 
 	def __init__(self, *args, **kwargs):
 		super(DeliveryNote, self).__init__(*args, **kwargs)

@@ -143,8 +143,8 @@
    "type": "Link"
   }
  ],
- "modified": "2023-05-11 10:17:13.170471",
- "modified_by": "pradip.jadhav@erpdata.in",
+ "modified": "2023-06-01 16:10:50.034952",
+ "modified_by": "Administrator",
  "module": "Quality Management",
  "name": "Quality",
  "number_cards": [],
@@ -154,7 +154,7 @@
  "quick_lists": [],
  "restrict_to_domain": "",
  "roles": [],
- "sequence_id": 26.0,
+ "sequence_id": 29.0,
  "shortcuts": [
   {
    "color": "Grey",

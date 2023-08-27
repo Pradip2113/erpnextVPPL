@@ -8,11 +8,45 @@ from frappe.model.document import Document
 from frappe.model.mapper import get_mapped_doc
 from frappe.query_builder.functions import Sum
 from frappe.utils import flt, getdate
-
+from erpnext.stock.get_item_details import get_conversion_factor, get_price_list_rate
 from erpnext.stock.doctype.item.item import get_item_defaults
 
 
 class BlanketOrder(Document):
+	@frappe.whitelist()
+	def opcost(self):
+		doc=frappe.db.get_list('Quota',filters={'name':self.quota})
+		for d in doc:
+			doc1=frappe.get_doc('Quota',d.name)
+			if(self.quota==d.name):
+				for d1 in doc1.get("items"):
+					self.append("items",{
+							"item_code":d1.item_code,
+							"item_name":d1.item_name,
+							"item_group":d1.item_group,
+							"quota_name":d1.quota_name,
+							}
+						)
+     
+	@frappe.whitelist()
+	def uomfetch(self):
+		for d in self.get("items"):
+			doc=frappe.db.get_list('Item',filters={'name':d.item_code},fields={'name','sales_uom','stock_uom'})
+			for m in doc:
+				if (d.item_code == m.name):
+					d.unit_of_measure_ = m.stock_uom
+					d.uom = m.sales_uom
+    
+	@frappe.whitelist()
+	def uomfact(self):
+		for sc in self.get('items'):
+			sc.conversion_factor = flt(get_conversion_factor(sc.item_code, sc.uom)["conversion_factor"])
+			if sc.uom and sc.qty:
+				sc.qty_as_per_stock_uom = flt(sc.conversion_factor) * flt(sc.qty)
+			if not sc.uom and sc.unit_of_measure_:
+				sc.uom = sc.unit_of_measure_
+				sc.qty = sc.qty_as_per_stock_uom
+    
 	def validate(self):
 		self.validate_dates()
 		self.validate_duplicate_items()
@@ -20,6 +54,7 @@ class BlanketOrder(Document):
 	def validate_dates(self):
 		if getdate(self.from_date) > getdate(self.to_date):
 			frappe.throw(_("From date cannot be greater than To date"))
+   
 
 	def validate_duplicate_items(self):
 		item_list = []
@@ -122,3 +157,4 @@ def validate_against_blanket_order(order_doc):
 									item.item_code, allowed_qty, bo_name
 								)
 							)
+

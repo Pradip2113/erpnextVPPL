@@ -215,6 +215,7 @@
    "width": "100px"
   },
   {
+   "allow_on_submit": 1,
    "columns": 2,
    "fieldname": "qty",
    "fieldtype": "Float",
@@ -337,6 +338,7 @@
    "fieldtype": "Section Break"
   },
   {
+   "allow_on_submit": 1,
    "bold": 1,
    "columns": 2,
    "fieldname": "rate",
@@ -1021,7 +1023,7 @@
  "idx": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-02-28 15:43:04.470104",
+ "modified": "2023-07-05 15:53:12.702901",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Purchase Receipt Item",

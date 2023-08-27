@@ -1,6 +1,6 @@
 # Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 # License: GNU General Public License v3. See license.txt
-
+# Modified by : Abhishek Chougule - Dev.MrAbhi
 
 import json
 from collections import defaultdict
@@ -62,6 +62,87 @@ form_grid_templates = {"items": "templates/form_grid/stock_entry_grid.html"}
 
 
 class StockEntry(StockController):
+
+	@frappe.whitelist()
+	def before_save(self):
+		pd=self.process_definition
+		if str(self.stock_entry_type)=='Process Manufacturing':
+			prod=frappe.db.get_list("Process Definition",fields=['name',],filters={'name':str(pd)})
+			for l in prod:
+				total_qty=0
+				raw_qty=0
+				tac=0
+				pdoc=frappe.get_doc("Process Definition",l.name)
+					
+				for m in pdoc.get('materials'):
+					total_qty=total_qty+m.quantity
+					for i in self.get('items'):
+						if m.item==i.item_code:
+							raw_qty=raw_qty+i.qty
+			
+			for ac in self.get('additional_costs'):
+				for oc in pdoc.get("operation_cost"):
+					if ac.expense_account==oc.expense_account:
+						ac.amount=(oc.amount/total_qty)*raw_qty
+						tac=tac+ac.amount
+					
+			self.total_additional_costs=tac	
+
+	@frappe.whitelist()
+	def get_details(self):
+		pd=self.process_definition
+		if str(self.stock_entry_type)=='Process Manufacturing':
+			prod=frappe.db.get_list("Process Definition",fields=['name',],filters={'name':str(pd)})
+			for l in prod:
+				pdoc=frappe.get_doc("Process Definition",l.name)
+
+				for m in pdoc.get('materials'):
+					child_row = self.append("items", {})
+					child_row.item_code = m.item
+					child_row.uom = m.uom
+					child_row.stock_uom = m.uom
+					child_row.t_warehouse = m.target_warehouse
+					child_row.s_warehouse = m.source_warehouse
+				
+				for fp in pdoc.get('finished_products'):
+					child_row = self.append("items", {})
+					child_row.item_code = fp.item
+					child_row.uom = fp.uom
+					child_row.stock_uom = fp.uom
+					child_row.t_warehouse = fp.target_warehouse
+					child_row.s_warehouse = fp.source_warehouse
+					
+
+				for s in pdoc.get('scrap'):
+					child_row = self.append("items", {})
+					child_row.item_code = s.item
+					child_row.uom = s.uom
+					child_row.stock_uom = s.uom
+					child_row.t_warehouse = s.target_warehouse
+					child_row.s_warehouse = s.source_warehouse
+					
+					
+				for oc in pdoc.get("operation_cost"):	
+					if oc.expense_account not in [row.expense_account for row in self.additional_costs]:
+						child_row = self.append("additional_costs", {})
+						child_row.expense_account = oc.expense_account
+						child_row.amount = oc.amount
+						child_row.base_amount = oc.amount
+						child_row.description = oc.description
+				
+
+
+		
+
+	@frappe.whitelist()
+	def additional_cost_append(self):
+		for i in self.get('operation_costs'):
+			for j in self.get('additional_costs'):
+				j.expense_account=i.operations
+				j.amount=i.cost
+				j.description='None'
+
+
 	def __init__(self, *args, **kwargs):
 		super(StockEntry, self).__init__(*args, **kwargs)
 		if self.purchase_order:
@@ -88,6 +169,8 @@ class StockEntry(StockController):
 
 	def onload(self):
 		for item in self.get("items"):
+			#MrAbhi
+			# item.set_basic_rate_manually=1
 			item.update(get_bin_details(item.item_code, item.s_warehouse))
 
 	def before_validate(self):
@@ -770,6 +853,7 @@ class StockEntry(StockController):
 		# If no incoming items, set additional costs blank
 		if not any(d.item_code for d in self.items if d.t_warehouse):
 			self.additional_costs = []
+			# pass
 
 		self.total_additional_costs = sum(flt(t.base_amount) for t in self.get("additional_costs"))
 

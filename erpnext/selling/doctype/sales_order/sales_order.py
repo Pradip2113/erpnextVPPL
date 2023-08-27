@@ -41,6 +41,45 @@ class WarehouseRequired(frappe.ValidationError):
 
 
 class SalesOrder(SellingController):
+	# @frappe.whitelist()    
+	# def somsg(self):
+	# 	doc1=frappe.db.get_list('Quota',filters={'name':self.quota},fields={'name','total_quantity'})
+	# 	for d in doc1:
+	# 		if(self.quota == d.name):
+	# 			frappe.msgprint("Quota Qty ="+ str(d.total_quantity))
+	# @frappe.whitelist()    
+	# def msgquota(self):
+	# 	total=0.0
+	# 	doc=frappe.db.get_list('Sales Order',filters={'docstatus':'1'},fields={'name','total_qty'})
+	# 	for d in doc:
+	# 		doc1=frappe.get_doc('Sales Order',d.name)
+	# 		total=total+doc1.total_qty
+	# 	doc1=frappe.db.get_list('Quota',filters={'name':self.quota},fields={'name','total_quantity'})
+	# 	for d in doc1:
+	# 		if(self.quota == d.name):
+	# 			if(total > d.total_quantity):
+	# 				frappe.throw("Quota Qty ="+ str(d.total_quantity) +  "     "+ "Sales Orderd Qty = "+str(total))
+	# @frappe.whitelist()
+	# def fetchRate(self):
+	
+	# 	temp=self.tender
+	# 	allotment_order = frappe.get_doc("Blanket Order", temp)
+	# 	items_table = allotment_order.get("items")
+	# 	# doc1=frappe.get_all("Blanket Order",filters={"name":str(temp)})
+
+	# 	for j in items_table:
+	# 		for k in self.get('items'):
+	# 			frappe.msgprint(str(j.rate))
+	# 			k.rate=j.rate
+	# 			break
+
+	@frappe.whitelist()
+	def fetchRate(self):
+		for k in self.get('items'):
+			k.rate=k.blanket_order_rate
+
+		
+
 	def __init__(self, *args, **kwargs):
 		super(SalesOrder, self).__init__(*args, **kwargs)
 

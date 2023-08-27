@@ -49,6 +49,26 @@ form_grid_templates = {"items": "templates/form_grid/item_grid.html"}
 
 class SalesInvoice(SellingController):
     
+	@frappe.whitelist()
+	def opcost(self):
+		doc=frappe.db.get_list('Fertilizer Material Request',filters={'name':self.agri_material_request})
+		for d in doc:
+			doc1=frappe.get_doc('Fertilizer Material Request',d.name)
+			if(self.agri_material_request==d.name):
+				self.sale_type = 'Fertiliser Sale'
+				for d1 in doc1.get("items"):
+					self.append("items",{
+							"items":d1.item_code,
+							"item_name":d1.item_name,
+							"qty":d1.qty,
+							"rate":d1.rate,
+							"uom":d1.uom,
+							"description":d1.item_name,
+							"gst_hsn_code":d1.hsn_code,
+							}
+						)
+
+    
 	def __init__(self, *args, **kwargs):
 		super(SalesInvoice, self).__init__(*args, **kwargs)
 		self.status_updater = [
@@ -68,31 +88,143 @@ class SalesInvoice(SellingController):
 			}
 		]
 #   --------------------------------------------------------------------------------------------------------------------------------
+	# @frappe.whitelist()
+	# def vivek(self):
+	# 	if self.sale_type== "Free Sugar Sales":
+	# 		num=frappe.get_doc("Sales Invoice Document Numbering Counter", "Sales Invoice Document Numbering Counter")
+	# 		self.item_wise_numbering=str(str("B-SS-")+str(int(num.b_sugar_free_sale)+1))
+	# 		frappe.db.set_value("Sales Invoice Document Numbering Counter","Sales Invoice Document Numbering Counter" ,"b_sugar_free_sale", (int(num.b_sugar_free_sale)+1))
+	# 	elif self.sale_type== "Trading Sugar Sales ( Factory )":
+	# 		num=frappe.get_doc("Sales Invoice Document Numbering Counter", "Sales Invoice Document Numbering Counter")
+	# 		self.item_wise_numbering=str(str("B-STF-")+str(int(num.b_sugar_trading_sale_factory)+1))
+	# 		frappe.db.set_value("Sales Invoice Document Numbering Counter","Sales Invoice Document Numbering Counter" ,"b_sugar_trading_sale_factory", (int(num.b_sugar_trading_sale_factory)+1))
+	# 	elif self.sale_type== "Trading Sugar Sales ( Other Factory )":
+	# 		num=frappe.get_doc("Sales Invoice Document Numbering Counter", "Sales Invoice Document Numbering Counter")
+	# 		self.item_wise_numbering=str(str("B-STO-")+str(int(num.b_sugar_trading_sale_other_factory)+1))
+	# 		frappe.db.set_value("Sales Invoice Document Numbering Counter","Sales Invoice Document Numbering Counter" ,"b_sugar_trading_sale_other_factory", (int(num.b_sugar_trading_sale_other_factory)+1))
+	# 	elif self.sale_type== "Sugar Export Sale":
+	# 		num=frappe.get_doc("Sales Invoice Document Numbering Counter", "Sales Invoice Document Numbering Counter")
+	# 		self.item_wise_numbering=str(str("B-SE-")+str(int(num.b_sugar_export_sale)+1))
+	# 		frappe.db.set_value("Sales Invoice Document Numbering Counter","Sales Invoice Document Numbering Counter" ,"b_sugar_export_sale", (int(num.b_sugar_export_sale)+1))
+ 
+	# @frappe.whitelist()
+	# def vivek(self):
+	# 	sale_type_prefixes = {
+	# 		"Free Sugar Sales": {"prefix": "B-SS-", "counter_field": "b_sugar_free_sale"},
+	# 		"Trading Sugar Sales ( Factory )": {"prefix": "B-STF-", "counter_field": "b_sugar_trading_sale_factory"},
+	# 		"Trading Sugar Sales ( Other Factory )": {"prefix": "B-STO-", "counter_field": "b_sugar_trading_sale_other_factory"},
+	# 		"Sugar Export Sale": {"prefix": "B-SE-", "counter_field": "b_sugar_export_sale"}
+	# 	}
+
+	# 	num = frappe.get_doc("Sales Invoice Document Numbering Counter", "Sales Invoice Document Numbering Counter")
+		
+	# 	for sale_type, values in sale_type_prefixes.items():
+	# 		if self.sale_type == sale_type:
+	# 			counter_field = values["counter_field"]
+	# 			counter_value = int(getattr(num, counter_field)) + 1
+	# 			self.item_wise_numbering = values["prefix"] + str(counter_value)
+	# 			frappe.db.set_value("Sales Invoice Document Numbering Counter", "Sales Invoice Document Numbering Counter", counter_field, counter_value)
+	# 			break
+ 
+	
+	# @frappe.whitelist()
+	# def vivek(self):
+	# 	sale_type_prefixes = {
+	# 		"Free Sugar Sales": {"prefix": "B-SS-", "Bedkihal": "b_sugar_free_sale", "Nagpur": "n_sugar_free_sale"},
+	# 		"Trading Sugar Sales ( Factory )": {"prefix": "B-STF-", "Bedkihal": "b_sugar_trading_sale_factory", "Nagpur": "n_sugar_trading_sale_factory"},
+	# 		"Trading Sugar Sales ( Other Factory )": {"prefix": "B-STO-", "Bedkihal": "b_sugar_trading_sale_other_factory", "Nagpur": "n_sugar_trading_sale_other_factory"},
+	# 		"Sugar Export Sale": {"prefix": "B-SE-", "Bedkihal": "b_sugar_export_sale", "Nagpur": "n_sugar_export_sale"}
+	# 	}
+
+	# 	num = frappe.get_doc("Sales Invoice Document Numbering Counter", "Sales Invoice Document Numbering Counter")
+	# 	branch = self.branch
+
+	# 	for sale_type, values in sale_type_prefixes.items():
+	# 		if self.sale_type == sale_type:
+	# 			counter_field = values[branch]
+	# 			counter_value = int(getattr(num, counter_field)) + 1
+	# 			self.item_wise_numbering = values["prefix"] + str(counter_value)
+	# 			frappe.db.set_value("Sales Invoice Document Numbering Counter", "Sales Invoice Document Numbering Counter", counter_field, counter_value)
+	# 			break
 	@frappe.whitelist()
 	def vivek(self):
-		for d in self.get('items'):
-			# frappe.msgprint(d.item_name)
-			p=str(d.item_name)
-			if "sugar" in p.lower():
-				# frappe.msgprint(p)
-				n=frappe.get_doc("Sales Invoice Document Numbering Counter", "Sales Invoice Document Numbering Counter")
-				self.item_wise_numbering=str(str("SU-")+n.sugar)
-				frappe.db.set_value("Sales Invoice Document Numbering Counter","Sales Invoice Document Numbering Counter" ,"sugar", (int(int(n.sugar)+1)))
-			elif "molasses" in p.lower():
-				# frappe.msgprint(p)
-				n=frappe.get_doc("Sales Invoice Document Numbering Counter", "Sales Invoice Document Numbering Counter")
-				self.item_wise_numbering=str(str("MO-")+n.molasses)
-				frappe.db.set_value("Sales Invoice Document Numbering Counter","Sales Invoice Document Numbering Counter" ,"molasses", (int(int(n.molasses)+1)))
-			elif "bagasse" in p.lower():
-				# frappe.msgprint(p)
-				n=frappe.get_doc("Sales Invoice Document Numbering Counter", "Sales Invoice Document Numbering Counter")
-				self.item_wise_numbering=str(str("BG-")+n.bagasse)
-				frappe.db.set_value("Sales Invoice Document Numbering Counter","Sales Invoice Document Numbering Counter" ,"bagasse", (int(int(n.bagasse)+1)))
-			elif "ethanol" in p.lower():
-				# frappe.msgprint(p)
-				n=frappe.get_doc("Sales Invoice Document Numbering Counter", "Sales Invoice Document Numbering Counter")
-				self.item_wise_numbering=str(str("ET-")+n.ethanol)
-				frappe.db.set_value("Sales Invoice Document Numbering Counter","Sales Invoice Document Numbering Counter" ,"ethanol", (int(int(n.ethanol)+1)))
+		sale_type_prefixes = {
+			("Free Sugar Sales", "Bedkihal"):                         	{"prefix": "B-SS-", "counter_field": "b_sugar_free_sale"},
+			("Trading Sugar Sales ( Factory )", "Bedkihal"):           	{"prefix": "B-STF-", "counter_field": "b_sugar_trading_sale_factory"},
+			("Trading Sugar Sales ( Other Factory )", "Bedkihal"):     	{"prefix": "B-STO-", "counter_field": "b_sugar_trading_sale_other_factory"},
+			("Sugar Export Sale", "Bedkihal"): 							{"prefix": "B-SE-", "counter_field": "b_sugar_export_sale"},
+			("Sugar Stock Transfer", "Bedkihal"): 						{"prefix": "B-SST-", "counter_field": "b_sugar_stock_transfer"},
+			("Bagasses Sales", "Bedkihal"): 							{"prefix": "B-BS-", "counter_field": "b_bagasse_sale"},
+			("Press-Mud Sales", "Bedkihal"): 							{"prefix": "B-PS-", "counter_field": "b_pressmud_sale"},
+			("Distillery Sales", "Bedkihal"): 							{"prefix": "B-DS-", "counter_field": "b_distillery_sale"},
+			("Distillery Sales (Other)", "Bedkihal"): 					{"prefix": "B-DSO-", "counter_field": "b_distillery_sale_other"},
+			("Other Sale", "Bedkihal"): 							    {"prefix": "B-OS-", "counter_field": "b_other_sale"},
+			("Fertiliser Sale", "Bedkihal"): 							{"prefix": "B-FS-", "counter_field": "b_fertiliser_sale"},
+			("Power Sale", "Bedkihal"): 							    {"prefix": "B-PWR-", "counter_field": "b_power_sale"},
+    # -----------------------------------------------------------------------------------------------------------------------------------------------------
+			("Free Sugar Sales", "Nagpur"):                            	{"prefix": "N-SS-", "counter_field": "n_sugar_free_sale"},
+			("Trading Sugar Sales ( Factory )", "Nagpur"):             	{"prefix": "N-STF-", "counter_field": "n_sugar_trading_sale_factory"},
+			# ("Trading Sugar Sales ( Other Factory )", "Nagpur"):       	{"prefix": "N-STO-", "counter_field": "n_sugar_trading_sale_other_factory"},
+			("Sugar Export Sale", "Nagpur"): 							{"prefix": "N-SE-", "counter_field": "n_sugar_export_sale"},
+			("Sugar Stock Transfer", "Nagpur"): 						{"prefix": "N-SST-", "counter_field": "n_sugar_stock_transfer"},
+			("Bagasses Sales", "Nagpur"): 								{"prefix": "N-BS-", "counter_field": "n__bagasse_sale"},
+			("Press-Mud Sales", "Nagpur"): 								{"prefix": "N-PS-", "counter_field": "n_pressmud_sale"},
+			("Other Sale", "Nagpur"): 								    {"prefix": "N-OS-", "counter_field": "n_other_sale"}, 
+			("Molasses Sale", "Nagpur"): 								{"prefix": "N-MS-", "counter_field": "n_molasses_sale"}
+			
+		}
+
+		num = frappe.get_doc("Sales Invoice Document Numbering Counter", "Sales Invoice Document Numbering Counter")
+		branch = self.branch
+
+		for key, values in sale_type_prefixes.items():
+			sale_type, branch_value = key
+			if self.sale_type == sale_type and branch == branch_value:
+				counter_field = values["counter_field"]
+				counter_value = getattr(num, counter_field)
+				if not counter_value :
+					counter_value = 1
+				else:
+					counter_value = int(counter_value) + 1
+				self.item_wise_numbering = values["prefix"] + str(counter_value)
+				frappe.db.set_value("Sales Invoice Document Numbering Counter", "Sales Invoice Document Numbering Counter", counter_field, counter_value)
+				break
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+		# for d in self.get('items'):
+		# 	# frappe.msgprint(d.item_name)
+		# 	p=str(d.item_name)
+		# 	if "sugar" in p.lower():
+		# 		# frappe.msgprint(p)
+		# 		num=frappe.get_doc("Sales Invoice Document Numbering Counter", "Sales Invoice Document Numbering Counter",fields=["sugar"])
+		# 		self.item_wise_numbering=str(str("SU-")+str(num.sugar))
+		# 		frappe.db.set_value("Sales Invoice Document Numbering Counter","Sales Invoice Document Numbering Counter" ,"sugar", (int(num.sugar) +1))
+		# 	elif "molasses" in p.lower():
+		# 		# frappe.msgprint(p)
+		# 		n=frappe.get_doc("Sales Invoice Document Numbering Counter", "Sales Invoice Document Numbering Counter")
+		# 		self.item_wise_numbering=str(str("MO-")+n.molasses)
+		# 		frappe.db.set_value("Sales Invoice Document Numbering Counter","Sales Invoice Document Numbering Counter" ,"molasses", (int(int(n.molasses)+1)))
+		# 	elif "bagasse" in p.lower():
+		# 		# frappe.msgprint(p)
+		# 		n=frappe.get_doc("Sales Invoice Document Numbering Counter", "Sales Invoice Document Numbering Counter")
+		# 		self.item_wise_numbering=str(str("BG-")+n.bagasse)
+		# 		frappe.db.set_value("Sales Invoice Document Numbering Counter","Sales Invoice Document Numbering Counter" ,"bagasse", (int(int(n.bagasse)+1)))
+		# 	elif "ethanol" in p.lower():
+		# 		# frappe.msgprint(p)
+		# 		n=frappe.get_doc("Sales Invoice Document Numbering Counter", "Sales Invoice Document Numbering Counter")
+		# 		self.item_wise_numbering=str(str("ET-")+n.ethanol)
+		# 		frappe.db.set_value("Sales Invoice Document Numbering Counter","Sales Invoice Document Numbering Counter" ,"ethanol", (int(int(n.ethanol)+1)))
 				# frappe.get_all("Sales Invoice Document Numbering Counter", filters=None, fields=["name","first_date","last_date","branch_id"])
 				# frappe.msgprint(p)
 # ----------------------------------------------------------------------------------------------------------------------------------

@@ -41,8 +41,8 @@
    "type": "Link"
   }
  ],
- "modified": "2023-05-11 10:17:13.399138",
- "modified_by": "pradip.jadhav@erpdata.in",
+ "modified": "2023-06-01 16:10:50.660310",
+ "modified_by": "Administrator",
  "module": "Utilities",
  "name": "Utilities",
  "number_cards": [],
@@ -52,7 +52,7 @@
  "quick_lists": [],
  "restrict_to_domain": "",
  "roles": [],
- "sequence_id": 35.0,
+ "sequence_id": 37.0,
  "shortcuts": [],
  "title": "Utilities"
 }

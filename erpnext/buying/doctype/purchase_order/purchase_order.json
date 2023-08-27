@@ -17,8 +17,8 @@
   "order_confirmation_date",
   "get_items_from_open_material_requests",
   "column_break_7",
-  "transaction_date",
   "schedule_date",
+  "transaction_date",
   "column_break1",
   "company",
   "apply_tds",
@@ -541,6 +541,7 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "base_total",
    "fieldtype": "Currency",
    "label": "Total (Company Currency)",
@@ -597,6 +598,7 @@
    "options": "fa fa-money"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "taxes_and_charges",
    "fieldtype": "Link",
    "label": "Purchase Taxes and Charges Template",
@@ -622,6 +624,7 @@
    "hide_border": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "taxes",
    "fieldtype": "Table",
    "label": "Purchase Taxes and Charges",
@@ -784,6 +787,7 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "base_in_words",
    "fieldtype": "Data",
    "label": "In Words (Company Currency)",
@@ -842,6 +846,7 @@
    "label": "Disable Rounded Total"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "in_words",
    "fieldtype": "Data",
    "label": "In Words",
@@ -1271,7 +1276,7 @@
  "idx": 105,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-01-28 18:59:16.322824",
+ "modified": "2023-08-09 18:14:13.042383",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Purchase Order",

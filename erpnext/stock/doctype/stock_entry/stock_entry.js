@@ -1,9 +1,35 @@
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors // License: GNU General Public License v3. See license.txt
+// Modified by : Abhishek Chougule - Dev.MrAbhi
 
 frappe.provide("erpnext.stock");
 frappe.provide("erpnext.accounts.dimensions");
 
 {% include 'erpnext/stock/landed_taxes_and_charges_common.js' %};
+
+frappe.ui.form.on('Stock Entry', {
+	process_definition:function(frm){
+		frm.clear_table("additional_costs")
+		frm.refresh_field("additional_costs")
+		frm.clear_table("items")
+		frm.refresh_field("items")
+		frm.call	({
+			method:"get_details",
+			doc:frm.doc,
+		})
+	}
+});
+
+
+frappe.ui.form.on('Stock Entry', {
+	on_submit(frm){
+		frm.clear_table("additional_costs")
+		frm.refresh_field("additional_costs")
+		frm.call	({
+			method:"additional_cost_append",
+			doc:frm.doc,
+		})
+	}
+});
 
 frappe.ui.form.on('Stock Entry', {
 	setup: function(frm) {
@@ -916,6 +942,7 @@ erpnext.stock.StockEntry = class StockEntry extends erpnext.stock.StockControlle
 
 	on_submit() {
 		this.clean_up();
+
 	}
 
 	after_cancel() {

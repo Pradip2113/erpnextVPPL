@@ -8,6 +8,9 @@
   },
   {
    "card": "Asset Value"
+  },
+  {
+   "card": "Minimum of Requested"
   }
  ],
  "charts": [
@@ -31,8 +34,8 @@
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2020-07-21 18:14:25.078929",
- "modified_by": "Administrator",
+ "modified": "2023-08-23 14:50:45.339019",
+ "modified_by": "chavan.vpplho@gmail.com",
  "module": "Assets",
  "name": "Asset",
  "owner": "Administrator"

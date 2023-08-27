@@ -1,8 +1,25 @@
 // Copyright (c) 2015, Frappe Technologies Pvt. Ltd. and Contributors
 // License: GNU General Public License v3. See license.txt
+frappe.ui.form.on('Sales Invoice', {
+	agri_material_request: function(frm) {
+		frm.clear_table("items")
+		frm.refresh_field('items')
+		frm.call({
+				method:'opcost',//function name defined in python
+				doc: frm.doc, //current document
+			});
+
+	}
+});
+frappe.ui.form.on('Sales Invoice', {
+    after_save: function(frm) {
+        frm.set_value('item_wise_numbering', '');
+    }
+});
+
 
 frappe.ui.form.on('Sales Invoice', {
-	set: function(frm) {
+	before_submit: function(frm) {
 		frm.call({
 			method: 'vivek',//function name defined in python
 			doc: frm.doc, //current document

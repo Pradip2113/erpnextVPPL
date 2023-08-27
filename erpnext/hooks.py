@@ -280,6 +280,14 @@ standard_queries = {
 }
 
 doc_events = {
+
+	#  "Delivery Note": {
+    #     "before_save": "weight_cal.weight_cal.doctype.dcpr.get_qty",
+    #     # "on_trash": "weight_cal.weight_cal.doctype.synctest.sync.sync_del_record",
+    #     # "on_cancel": "weight_cal.weight_cal.doctype.synctest.sync.sync_cancel_record"
+    # },
+
+
 	"*": {
 		"validate": "erpnext.support.doctype.service_level_agreement.service_level_agreement.apply",
 	},

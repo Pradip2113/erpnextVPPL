@@ -31,9 +31,9 @@
   "is_debit_note",
   "amended_from",
   "accounting_dimensions_section",
-  "cost_center",
   "dimension_col_break",
   "project",
+  "cost_center",
   "currency_and_price_list",
   "currency",
   "conversion_rate",
@@ -559,6 +559,7 @@
    "print_hide": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "shipping_address",
    "fieldtype": "Small Text",
    "hide_days": 1,
@@ -2147,6 +2148,7 @@
   {
    "fieldname": "set",
    "fieldtype": "Button",
+   "hidden": 1,
    "label": "Set"
   }
  ],
@@ -2160,7 +2162,7 @@
    "link_fieldname": "consolidated_invoice"
   }
  ],
- "modified": "2023-05-09 15:55:24.738386",
+ "modified": "2023-07-11 10:05:05.792067",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Sales Invoice",
@@ -2203,6 +2205,20 @@
    "permlevel": 1,
    "read": 1,
    "role": "All"
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "share": 1,
+   "submit": 1,
+   "write": 1
   }
  ],
  "quick_entry": 1,

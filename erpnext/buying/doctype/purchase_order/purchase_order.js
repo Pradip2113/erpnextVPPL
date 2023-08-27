@@ -5,6 +5,15 @@ frappe.provide("erpnext.buying");
 frappe.provide("erpnext.accounts.dimensions");
 {% include 'erpnext/public/js/controllers/buying.js' %};
 
+
+frappe.ui.form.on("Purchase Order", {
+	get_terms: function(frm) {
+		frm.call({
+			method:"get_tandc",
+			doc:frm.doc,
+		})
+	}})
+
 frappe.ui.form.on("Purchase Order", {
 	setup: function(frm) {
 

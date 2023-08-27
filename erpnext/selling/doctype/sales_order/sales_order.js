@@ -3,6 +3,41 @@
 
 {% include 'erpnext/selling/sales_common.js' %}
 
+frappe.ui.form.on('Sales Order', {
+	before_save: function (frm) {
+		frm.call({
+			method:'fetchRate',
+			doc: frm.doc,
+		});
+		
+	}
+})
+
+// frappe.ui.form.on('Sales Order', {
+// 	before_save: function (frm) {
+// 		frm.call({
+// 			method:'msgquota',
+// 			doc: frm.doc,
+// 		});
+		
+// 	}
+// })
+frappe.ui.form.on('Sales Order', {
+	// onload: function (frm) {
+	// 	frm.call({
+	// 		method:'somsg',
+	// 		doc: frm.doc,
+	// 	});
+	// },
+	onload: function (frm) {
+		frm.call({
+			method:'fetchRate',
+			doc: frm.doc,
+		});
+	},
+	
+
+})
 frappe.ui.form.on("Sales Order", {
 	setup: function(frm) {
 		frm.custom_make_buttons = {
@@ -90,6 +125,7 @@ frappe.ui.form.on("Sales Order", {
 	},
 
 	onload: function(frm) {
+		
 		if (!frm.doc.transaction_date){
 			frm.set_value('transaction_date', frappe.datetime.get_today())
 		}
@@ -130,6 +166,7 @@ frappe.ui.form.on("Sales Order", {
 		}
 
 		frm.ignore_doctypes_on_cancel_all = ['Purchase Order'];
+		
 	},
 
 	delivery_date: function(frm) {
